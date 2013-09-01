@@ -10,6 +10,9 @@ class syslog_ng::service () {
     default   => 'stopped'
   }
 
-  service { 'syslog-ng': ensure => $ensure }
+  service { 'syslog-ng':
+    ensure    => $ensure,
+    hasstatus => false,
+  }
 
 }
