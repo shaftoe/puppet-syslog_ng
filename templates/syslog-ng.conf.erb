@@ -10,9 +10,12 @@ source s_all {
   unix-stream("/dev/log"); 
 }; 
 
-destination d_loggly { 
-  tcp("logs.loggly.com" port(33504)); 
-}; 
+
+template LogglyFormat { template("<${PRI}>1 ${ISODATE} ${HOST} ${PROGRAM} ${PID} ${MSGID} [<%= @logglyid %> tag="<%= @hostname %>"] $MSG\n");};
+
+destination d_loggly {
+    tcp("logs-01.loggly.com" port(514) template(LogglyFormat));
+};
 
 log { 
   source(s_all); destination(d_loggly); 

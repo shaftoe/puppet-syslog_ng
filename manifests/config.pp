@@ -3,15 +3,17 @@
 #
 class syslog_ng::config(
   $subdomain = false,
-  $input = false,
-  $user = false,
-  $pass = false
+  $input     = false,
+  $user      = false,
+  $pass      = false,
+  $logglyid  = false
   ) inherits syslog_ng {
 
   if ! $subdomain { fail 'You need to provide $subdomain' }
   if ! $input     { fail 'You need to provide $input' }
   if ! $user      { fail 'You need to provide $user' }
   if ! $pass      { fail 'You need to provide $pass' }
+  if ! $logglyid  { fail 'You need to provide $logglyid' }
 
   require 'syslog_ng::package'
 
