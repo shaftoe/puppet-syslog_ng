@@ -11,12 +11,12 @@ source s_all {
 }; 
 
 
-template LogglyFormat { template("<${PRI}>1 ${ISODATE} ${HOST} ${PROGRAM} ${PID} ${MSGID} [<%= @logglyid %> tag="<%= @hostname %>"] $MSG\n");};
+template LogglyFormat { template("<${PRI}>1 ${ISODATE} ${HOST} ${PROGRAM} ${PID} ${MSGID} [<%= @logglyid %>] $MSG\n");};
 
 destination d_loggly {
     tcp("logs-01.loggly.com" port(514) template(LogglyFormat));
 };
 
-log { 
-  source(s_all); destination(d_loggly); 
-}; 
+log {
+  source(s_all); destination(d_loggly);
+};
