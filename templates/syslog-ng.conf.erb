@@ -1,22 +1,16 @@
 @version: 3.3
 
-options { chain_hostnames(off); flush_lines(0); use_dns(no); use_fqdn(no);
-          owner("root"); group("adm"); perm(0640); stats_freq(0);
-          bad_hostname("^gconfd$");
+source s_src {
+  unix-stream("/dev/log");
+  internal();
 };
 
-source s_all { 
-  internal(); 
-  unix-stream("/dev/log"); 
-}; 
-
-
-template LogglyFormat { template("<${PRI}>1 ${ISODATE} ${HOST} ${PROGRAM} ${PID} ${MSGID} [<%= @logglyid %>] $MSG\n");};
+template LogglyFormat {
+  template("<${PRI}>1 ${ISODATE} ${HOST} ${PROGRAM} ${PID} ${MSGID} [<%= @logglyid %>] $MSG\n");
+};
 
 destination d_loggly {
-    tcp("logs-01.loggly.com" port(514) template(LogglyFormat));
+  tcp("logs-01.loggly.com" port(514) template(LogglyFormat));
 };
 
-log {
-  source(s_all); destination(d_loggly);
-};
+log { source(s_src); destination(d_loggly); };
